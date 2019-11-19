@@ -1,7 +1,5 @@
 package com.varod.springbootmongodb.resources.exception;
 
-import java.net.http.HttpRequest;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
