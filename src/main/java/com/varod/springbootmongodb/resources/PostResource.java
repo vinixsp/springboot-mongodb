@@ -1,5 +1,6 @@
 package com.varod.springbootmongodb.resources;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.websocket.server.PathParam;
@@ -37,6 +38,20 @@ public class PostResource {
 	@RequestMapping(value="/titlequery", method = RequestMethod.GET)
 	public ResponseEntity<List<Post>> findByTitleQuery(@PathParam(value = "text") String text) {
 		List<Post> posts = service.findByTitle(URL.decodeParam(text));
+		return ResponseEntity.ok().body(posts);
+	}	
+
+	@RequestMapping(value="/fullsearch", method = RequestMethod.GET)
+	public ResponseEntity<List<Post>> fullSearch(
+			@PathParam(value = "text") String text,
+			@PathParam(value = "minDate") String minDate,
+			@PathParam(value = "maxDate") String maxDate) {
+		text = URL.decodeParam(text);
+		minDate = minDate == null ? "" : minDate;
+		maxDate = maxDate == null ? "" : maxDate;
+		Date min = URL.convertDate(minDate, new Date(0L));
+		Date max = URL.convertDate(maxDate, new Date());
+		List<Post> posts = service.fullSearch(text, min, max);
 		return ResponseEntity.ok().body(posts);
 	}	
 }
